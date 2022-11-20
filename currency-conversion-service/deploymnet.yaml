@@ -24,9 +24,15 @@ spec:
         app: currency-conversion
     spec:
       containers:
-      - image: egelirli/mmv2-currency-conversion-service:0.0.11-SNAPSHOT
+      - image: egelirli/mmv2-currency-conversion-service:0.0.12-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: mmv2-currency-conversion-service
+        envFrom:
+          - configMapRef:
+              name: currency-conversion
+ #       env:
+ #         - name: CURRENCY_EXCHANGE_URI
+ #           value: http://currency-exchange
         resources:
           limits:
             cpu: 500m
@@ -71,4 +77,12 @@ spec:
     app: currency-conversion
   sessionAffinity: None
   type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+data: 
+  CURRENCY_EXCHANGE_URI: http://currency-exchange
+metadata:
+  name: currency-conversion
+  namespace: default 
 
