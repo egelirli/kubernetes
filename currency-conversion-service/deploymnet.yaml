@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"mmv2-currency-exchange-service"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"mmv2-currency-exchange-service"}]},"modified":true}'
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"mmv2-currency-conversion-service"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"mmv2-currency-conversion-service"}]},"modified":true}'
     deployment.kubernetes.io/revision: "1"
   labels:
-    app: currency-exchange
-  name: currency-exchange
+    app: currency-conversion
+  name: currency-conversion
   namespace: default
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: currency-exchange
+      app: currency-conversion
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -21,12 +21,12 @@ spec:
   template:
     metadata:
       labels:
-        app: currency-exchange
+        app: currency-conversion
     spec:
       containers:
-      - image: egelirli/mmv2-currency-exchange-service:0.0.11-SNAPSHOT
+      - image: egelirli/mmv2-currency-conversion-service:0.0.11-SNAPSHOT
         imagePullPolicy: IfNotPresent
-        name: mmv2-currency-exchange-service
+        name: mmv2-currency-conversion-service
         resources:
           limits:
             cpu: 500m
@@ -53,8 +53,8 @@ metadata:
   annotations:
     cloud.google.com/neg: '{"ingress":true}'
   labels:
-    app: currency-exchange
-  name: currency-exchange
+    app: currency-conversion
+  name: currency-conversion
   namespace: default
 spec:
   allocateLoadBalancerNodePorts: true
@@ -64,11 +64,11 @@ spec:
   - IPv4
   ipFamilyPolicy: SingleStack
   ports:
-  - port: 8000
+  - port: 8100
     protocol: TCP
-    targetPort: 8000
+    targetPort: 8100
   selector:
-    app: currency-exchange
+    app: currency-conversion
   sessionAffinity: None
   type: LoadBalancer
 
