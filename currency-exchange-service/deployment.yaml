@@ -9,7 +9,7 @@ metadata:
   name: currency-exchange
   namespace: default
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: currency-exchange
@@ -27,14 +27,16 @@ spec:
       - image: egelirli/mmv2-currency-exchange-service:0.0.12-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: mmv2-currency-exchange-service
-        readinessProbe:
-          httpGet:
-            port: 8000
-            path: /actuator/health/readiness
-        livenessProbe:
-          httpGet:
-            port: 8000
-            path: /actuator/health/liveness
+#        readinessProbe:
+#         httpGet:
+#            port: 8000
+#            path: /actuator/health/readiness
+#        livenessProbe:
+#          httpGet:
+#            port: 8000
+#            path: /actuator/health/liveness
+#          initialDelaySeconds: 3
+#          periodSeconds: 3   
         resources:
           limits:
             cpu: 500m
